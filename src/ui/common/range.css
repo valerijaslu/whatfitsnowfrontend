@@ -31,3 +31,67 @@
   font-size: var(--font-size-1);
 }
 
+.dualRange {
+  position: relative;
+  height: 2.25rem;
+  display: grid;
+  align-items: center;
+}
+
+.dualRangeTrack {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0.25rem;
+  border-radius: var(--radius-1);
+  background: linear-gradient(
+    to right,
+    var(--border) 0%,
+    var(--border) var(--from),
+    var(--text) var(--from),
+    var(--text) var(--to),
+    var(--border) var(--to),
+    var(--border) 100%
+  );
+}
+
+.dualRangeInput {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: transparent;
+  appearance: none;
+  pointer-events: none;
+  margin: 0;
+}
+
+.dualRangeInput::-webkit-slider-thumb {
+  appearance: none;
+  pointer-events: auto;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 999px;
+  background: var(--card);
+  border: 2px solid var(--text);
+}
+
+.dualRangeInput::-webkit-slider-runnable-track {
+  height: 0.25rem;
+  background: transparent;
+}
+
+.dualRangeInput::-moz-range-thumb {
+  pointer-events: auto;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 999px;
+  background: var(--card);
+  border: 2px solid var(--text);
+}
+
+.dualRangeInput::-moz-range-track {
+  height: 0.25rem;
+  background: transparent;
+}
+
