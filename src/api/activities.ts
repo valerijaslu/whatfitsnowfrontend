@@ -1,6 +1,7 @@
 import { http } from "@/api/http";
 
 export type EffortLevel = "LOW" | "MEDIUM" | "HIGH";
+export type HealthCompatibility = "ANY" | "HEALTHY" | "ILL" | "MUSCLE_FATIGUE";
 export type LocationType = "INDOOR" | "OUTDOOR" | "BOTH";
 export type SocialType = "ALONE" | "SOCIAL" | "BOTH";
 export type WeatherCompatibility = "ANY" | "SUNNY" | "RAINY" | "COLD" | "HOT";
@@ -12,14 +13,10 @@ export type ActivityDto = {
   description: string | null;
   durationMinutes: number;
   effortLevel: EffortLevel;
-  pleasureScore: number;
-  satisfactionScore: number;
   locationType: LocationType;
   socialType: SocialType;
   weatherCompatibility: WeatherCompatibility;
-  minEnergy: number;
-  maxEnergy: number;
-  minHealth: number;
+  healthCompatibility: HealthCompatibility;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -31,14 +28,10 @@ export type CreateActivityRequest = {
   description: string | null;
   durationMinutes: number;
   effortLevel: EffortLevel;
-  pleasureScore: number;
-  satisfactionScore: number;
   locationType: LocationType;
   socialType: SocialType;
   weatherCompatibility: WeatherCompatibility;
-  minEnergy: number;
-  maxEnergy: number;
-  minHealth: number;
+  healthCompatibility: HealthCompatibility;
   isActive?: boolean;
   tags: string[];
 };

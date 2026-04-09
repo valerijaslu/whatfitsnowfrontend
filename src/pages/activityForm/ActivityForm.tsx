@@ -1,7 +1,14 @@
-import type { CreateActivityRequest, EffortLevel, LocationType, SocialType, WeatherCompatibility } from "@/api/activities";
+import type {
+  EffortLevel,
+  HealthCompatibility,
+  LocationType,
+  SocialType,
+  WeatherCompatibility,
+} from "@/api/activities";
 import {
   ACTIVITY_LIMITS,
   EFFORT_OPTIONS,
+  HEALTH_OPTIONS,
   LOCATION_OPTIONS,
   SOCIAL_OPTIONS,
   TAGS_HELPER_TEXT,
@@ -23,14 +30,10 @@ export type ActivityFormValues = {
   description: string;
   durationMinutes: string;
   effortLevel: EffortLevel;
-  pleasureScore: string;
-  satisfactionScore: string;
   locationType: LocationType;
   socialType: SocialType;
   weatherCompatibility: WeatherCompatibility;
-  minEnergy: string;
-  maxEnergy: string;
-  minHealth: string;
+  healthCompatibility: HealthCompatibility;
   tagsRaw: string;
   isActive: boolean;
 };
@@ -105,7 +108,7 @@ export function ActivityForm({
 
           <div className="divider" />
 
-          <div className="grid3">
+          <div className="grid2">
             <SelectField
               label="Effort level"
               name="effortLevel"
@@ -116,33 +119,14 @@ export function ActivityForm({
               selectProps={{ required: true }}
             />
 
-            <FormField
-              label="Pleasure score"
-              name="pleasureScore"
-              type="number"
-              value={values.pleasureScore}
-              onChange={(v) => onChange({ pleasureScore: v })}
-              error={errors.pleasureScore ?? null}
-              inputProps={{
-                required: true,
-                min: ACTIVITY_LIMITS.scoreMin,
-                max: ACTIVITY_LIMITS.scoreMax,
-                step: 1,
-              }}
-            />
-            <FormField
-              label="Satisfaction score"
-              name="satisfactionScore"
-              type="number"
-              value={values.satisfactionScore}
-              onChange={(v) => onChange({ satisfactionScore: v })}
-              error={errors.satisfactionScore ?? null}
-              inputProps={{
-                required: true,
-                min: ACTIVITY_LIMITS.scoreMin,
-                max: ACTIVITY_LIMITS.scoreMax,
-                step: 1,
-              }}
+            <SelectField
+              label="Health"
+              name="healthCompatibility"
+              value={values.healthCompatibility}
+              options={HEALTH_OPTIONS}
+              onChange={(v) => onChange({ healthCompatibility: v })}
+              error={errors.healthCompatibility ?? null}
+              selectProps={{ required: true }}
             />
           </div>
 
@@ -175,53 +159,6 @@ export function ActivityForm({
               onChange={(v) => onChange({ weatherCompatibility: v })}
               error={errors.weatherCompatibility ?? null}
               selectProps={{ required: true }}
-            />
-          </div>
-
-          <div className="divider" />
-
-          <div className="grid3">
-            <FormField
-              label="Min energy"
-              name="minEnergy"
-              type="number"
-              value={values.minEnergy}
-              onChange={(v) => onChange({ minEnergy: v })}
-              error={errors.minEnergy ?? null}
-              inputProps={{
-                required: true,
-                min: ACTIVITY_LIMITS.energyMin,
-                max: ACTIVITY_LIMITS.energyMax,
-                step: 1,
-              }}
-            />
-            <FormField
-              label="Max energy"
-              name="maxEnergy"
-              type="number"
-              value={values.maxEnergy}
-              onChange={(v) => onChange({ maxEnergy: v })}
-              error={errors.maxEnergy ?? null}
-              inputProps={{
-                required: true,
-                min: ACTIVITY_LIMITS.energyMin,
-                max: ACTIVITY_LIMITS.energyMax,
-                step: 1,
-              }}
-            />
-            <FormField
-              label="Min health"
-              name="minHealth"
-              type="number"
-              value={values.minHealth}
-              onChange={(v) => onChange({ minHealth: v })}
-              error={errors.minHealth ?? null}
-              inputProps={{
-                required: true,
-                min: ACTIVITY_LIMITS.healthMin,
-                max: ACTIVITY_LIMITS.healthMax,
-                step: 1,
-              }}
             />
           </div>
 

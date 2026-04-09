@@ -1,4 +1,4 @@
-import type { PreferredLocationType, PreferredSocialType } from "@/api/suggestions";
+import type { HealthCompatibility, PreferredLocationType, PreferredSocialType } from "@/api/suggestions";
 import type { WeatherCompatibility } from "@/api/activities";
 
 export const SUGGESTION_LIMITS = {
@@ -10,13 +10,19 @@ export const SUGGESTION_LIMITS = {
 } as const;
 
 export const SUGGESTION_DEFAULTS = {
-  energyLevel: String(SUGGESTION_LIMITS.levelMin),
-  healthLevel: String(SUGGESTION_LIMITS.levelMin),
+  healthCompatibility: "ANY" as HealthCompatibility,
   preferredLocationType: "ANY" as PreferredLocationType,
   preferredSocialType: "ANY" as PreferredSocialType,
   currentWeather: "ANY" as WeatherCompatibility,
   availableMinutes: String(SUGGESTION_LIMITS.minutesMin),
 } as const;
+
+export const HEALTH_COMPATIBILITY_OPTIONS: ReadonlyArray<{ value: HealthCompatibility; label: string }> = [
+  { value: "ANY", label: "Any" },
+  { value: "HEALTHY", label: "Healthy" },
+  { value: "ILL", label: "Ill" },
+  { value: "MUSCLE_FATIGUE", label: "Muscle fatigue" },
+];
 
 export const PREFERRED_LOCATION_OPTIONS: ReadonlyArray<{ value: PreferredLocationType; label: string }> = [
   { value: "ANY", label: "Any" },

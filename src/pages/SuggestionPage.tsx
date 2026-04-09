@@ -5,11 +5,12 @@ import "@/ui/common/forms.css";
 import "@/ui/common/typography.css";
 import "@/ui/common/buttons.css";
 import { suggestActivities, type SuggestedActivityResponse } from "@/api/suggestions";
-import type { PreferredLocationType, PreferredSocialType } from "@/api/suggestions";
+import type { HealthCompatibility, PreferredLocationType, PreferredSocialType } from "@/api/suggestions";
 import type { WeatherCompatibility } from "@/api/activities";
 import { SelectField } from "@/ui/common/SelectField";
 import { FormField } from "@/ui/FormField";
 import {
+  HEALTH_COMPATIBILITY_OPTIONS,
   PREFERRED_LOCATION_OPTIONS,
   PREFERRED_SOCIAL_OPTIONS,
   SUGGESTION_DEFAULTS,
@@ -19,8 +20,9 @@ import {
 import { clampInt, parseIntOr } from "@/pages/suggestions/suggestionPageUtils";
 
 export function SuggestionPage() {
-  const [energyLevel, setEnergyLevel] = useState(SUGGESTION_DEFAULTS.energyLevel);
-  const [healthLevel, setHealthLevel] = useState(SUGGESTION_DEFAULTS.healthLevel);
+  const [healthCompatibility, setHealthCompatibility] = useState<HealthCompatibility>(
+    SUGGESTION_DEFAULTS.healthCompatibility,
+  );
   const [preferredLocationType, setPreferredLocationType] = useState<PreferredLocationType>(
     SUGGESTION_DEFAULTS.preferredLocationType,
   );
@@ -36,16 +38,7 @@ export function SuggestionPage() {
 
   const request = useMemo(
     () => ({
-      energyLevel: clampInt(
-        parseIntOr(SUGGESTION_LIMITS.levelMin, energyLevel),
-        SUGGESTION_LIMITS.levelMin,
-        SUGGESTION_LIMITS.levelMax,
-      ),
-      healthLevel: clampInt(
-        parseIntOr(SUGGESTION_LIMITS.levelMin, healthLevel),
-        SUGGESTION_LIMITS.levelMin,
-        SUGGESTION_LIMITS.levelMax,
-      ),
+      currentHealth: healthCompatibility,
       preferredLocationType,
       preferredSocialType,
       currentWeather,
@@ -55,7 +48,7 @@ export function SuggestionPage() {
         SUGGESTION_LIMITS.minutesMax,
       ),
     }),
-    [energyLevel, healthLevel, preferredLocationType, preferredSocialType, currentWeather, availableMinutes],
+    [healthCompatibility, preferredLocationType, preferredSocialType, currentWeather, availableMinutes],
   );
 
   async function onSubmit(e: React.FormEvent) {
@@ -92,22 +85,14 @@ export function SuggestionPage() {
           <div className="muted">Tell me what you’ve got to work with. I’ll suggest up to three activities.</div>
 
           <form className="stack" onSubmit={onSubmit} aria-busy={isSubmitting}>
-            <div className="grid2">
-              <FormField
-                label="Energy level (1–5)"
-                name="energyLevel"
-                type="number"
-                value={energyLevel}
-                onChange={setEnergyLevel}
-              />
-              <FormField
-                label="Health level (1–5)"
-                name="healthLevel"
-                type="number"
-                value={healthLevel}
-                onChange={setHealthLevel}
-              />
-            </div>
+            <SelectField
+              label="Health"
+              name="healthCompatibility"
+              value={healthCompatibility}
+              options={HEALTH_COMPATIBILITY_OPTIONS}
+              onChange={setHealthCompatibility}
+              selectProps={{ required: true }}
+            />
 
             <div className="grid3">
               <SelectField

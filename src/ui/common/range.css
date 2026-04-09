@@ -1,0 +1,33 @@
+.rangeRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.rangeValue {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.range {
+  width: 100%;
+}
+
+.rangeGroupHeader {
+  display: flex;
+  gap: var(--space-2);
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.rangeGroup {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.rangeSubLabel {
+  color: var(--muted);
+  font-size: var(--font-size-1);
+}
+

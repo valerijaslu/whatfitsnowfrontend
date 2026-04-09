@@ -3,10 +3,10 @@ import type { WeatherCompatibility } from "@/api/activities";
 
 export type PreferredLocationType = "INDOOR" | "OUTDOOR" | "ANY";
 export type PreferredSocialType = "ALONE" | "SOCIAL" | "ANY";
+export type HealthCompatibility = "ANY" | "HEALTHY" | "ILL" | "MUSCLE_FATIGUE";
 
 export type SuggestionRequest = {
-  energyLevel: number;
-  healthLevel: number;
+  currentHealth: HealthCompatibility;
   preferredLocationType: PreferredLocationType;
   preferredSocialType: PreferredSocialType;
   currentWeather: WeatherCompatibility;
