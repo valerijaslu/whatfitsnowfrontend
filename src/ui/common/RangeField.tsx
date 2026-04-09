@@ -11,6 +11,7 @@ type Props = {
   max: number;
   step?: number;
   error?: string | null;
+  marks?: number[];
 };
 
 function toNumber(raw: string, fallback: number) {
@@ -18,9 +19,10 @@ function toNumber(raw: string, fallback: number) {
   return Number.isFinite(n) ? n : fallback;
 }
 
-export function RangeField({ label, name, value, onChange, min, max, step = 1, error }: Props) {
+export function RangeField({ label, name, value, onChange, min, max, step = 1, error, marks }: Props) {
   const listId = `${name}-marks`;
-  const marks = Array.from({ length: max - min + 1 }, (_, i) => min + i);
+  const resolvedMarks = marks ?? Array.from({ length: max - min + 1 }, (_, i) => min + i);
+  const showMarks = resolvedMarks.length > 0 && resolvedMarks.length <= 15;
 
   return (
     <div className="field">
@@ -38,17 +40,19 @@ export function RangeField({ label, name, value, onChange, min, max, step = 1, e
           max={max}
           step={step}
           value={value}
-          list={listId}
+          list={showMarks ? listId : undefined}
           onChange={(e) => onChange(toNumber(e.target.value, value))}
         />
         <div className="rangeValue">{value}</div>
       </div>
 
-      <datalist id={listId}>
-        {marks.map((m) => (
-          <option key={m} value={m} />
-        ))}
-      </datalist>
+      {showMarks ? (
+        <datalist id={listId}>
+          {resolvedMarks.map((m) => (
+            <option key={m} value={m} />
+          ))}
+        </datalist>
+      ) : null}
 
       {error ? <div className="error">{error}</div> : null}
     </div>

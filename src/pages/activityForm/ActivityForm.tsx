@@ -11,14 +11,13 @@ import {
   HEALTH_OPTIONS,
   LOCATION_OPTIONS,
   SOCIAL_OPTIONS,
-  TAGS_HELPER_TEXT,
   WEATHER_OPTIONS,
 } from "@/pages/activityForm/activityFormConfig";
 import type { ActivityFieldErrors } from "@/pages/activityForm/activityFormErrors";
 import { FormField } from "@/ui/FormField";
 import { CheckboxField } from "@/ui/common/CheckboxField";
 import { SelectField } from "@/ui/common/SelectField";
-import { TextAreaField } from "@/ui/common/TextAreaField";
+import { RangeField } from "@/ui/common/RangeField";
 import "@/ui/common/surface.css";
 import "@/ui/common/forms.css";
 import "@/ui/common/typography.css";
@@ -27,14 +26,13 @@ import { Link } from "react-router-dom";
 
 export type ActivityFormValues = {
   title: string;
-  description: string;
-  durationMinutes: string;
+  minDurationMinutes: string;
+  maxDurationMinutes: string;
   effortLevel: EffortLevel;
   locationType: LocationType;
   socialType: SocialType;
   weatherCompatibility: WeatherCompatibility;
   healthCompatibility: HealthCompatibility;
-  tagsRaw: string;
   isActive: boolean;
 };
 
@@ -70,40 +68,38 @@ export function ActivityForm({
         {isLoading ? <div className="muted">Loading…</div> : null}
 
         <form className="stack" onSubmit={onSubmit} aria-busy={isSubmitting}>
-          <div className="grid2">
-            <FormField
-              label="Title"
-              name="title"
-              value={values.title}
-              onChange={(v) => onChange({ title: v })}
-              placeholder="e.g. 20-minute walk"
-              error={errors.title ?? null}
-              inputProps={{ required: true, maxLength: ACTIVITY_LIMITS.titleMax }}
-            />
-            <FormField
-              label="Duration (minutes)"
-              name="durationMinutes"
-              type="number"
-              value={values.durationMinutes}
-              onChange={(v) => onChange({ durationMinutes: v })}
-              error={errors.durationMinutes ?? null}
-              inputProps={{
-                required: true,
-                min: ACTIVITY_LIMITS.durationMin,
-                max: ACTIVITY_LIMITS.durationMax,
-                step: 1,
-              }}
-            />
-          </div>
+          <FormField
+            label="Title"
+            name="title"
+            value={values.title}
+            onChange={(v) => onChange({ title: v })}
+            placeholder="e.g. 20-minute walk"
+            error={errors.title ?? null}
+            inputProps={{ required: true, maxLength: ACTIVITY_LIMITS.titleMax }}
+          />
 
-          <TextAreaField
-            label="Description"
-            name="description"
-            value={values.description}
-            onChange={(v) => onChange({ description: v })}
-            placeholder="Optional notes, setup, constraints…"
-            error={errors.description ?? null}
-            textAreaProps={{ maxLength: ACTIVITY_LIMITS.descriptionMax }}
+          <RangeField
+            label="Min duration (minutes)"
+            name="minDurationMinutes"
+            value={Number.parseInt(values.minDurationMinutes, 10) || ACTIVITY_LIMITS.durationMin}
+            onChange={(n) => onChange({ minDurationMinutes: String(n) })}
+            min={ACTIVITY_LIMITS.durationMin}
+            max={ACTIVITY_LIMITS.durationMax}
+            step={1}
+            marks={[5, 10, 15, 20, 30, 45, 60, 90, 120, 180, 240, 360, 480, 720, 1440]}
+            error={errors.minDurationMinutes ?? null}
+          />
+
+          <RangeField
+            label="Max duration (minutes)"
+            name="maxDurationMinutes"
+            value={Number.parseInt(values.maxDurationMinutes, 10) || ACTIVITY_LIMITS.durationMax}
+            onChange={(n) => onChange({ maxDurationMinutes: String(n) })}
+            min={ACTIVITY_LIMITS.durationMin}
+            max={ACTIVITY_LIMITS.durationMax}
+            step={1}
+            marks={[5, 10, 15, 20, 30, 45, 60, 90, 120, 180, 240, 360, 480, 720, 1440]}
+            error={errors.maxDurationMinutes ?? null}
           />
 
           <div className="divider" />
@@ -161,18 +157,6 @@ export function ActivityForm({
               selectProps={{ required: true }}
             />
           </div>
-
-          <div className="divider" />
-
-          <FormField
-            label="Tags"
-            name="tags"
-            value={values.tagsRaw}
-            onChange={(v) => onChange({ tagsRaw: v })}
-            placeholder={TAGS_HELPER_TEXT}
-            error={errors.tags ?? null}
-            inputProps={{ maxLength: 255 }}
-          />
 
           <CheckboxField
             label="Active"

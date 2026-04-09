@@ -9,13 +9,6 @@ export function parseIntOr(defaultValue: number, raw: string) {
   return Number.isFinite(n) ? n : defaultValue;
 }
 
-export function normalizeTags(raw: string) {
-  return raw
-    .split(",")
-    .map((t) => t.trim())
-    .filter((t) => t.length > 0);
-}
-
 export function parseActivityId(raw: string | undefined): number | null {
   if (!raw) return null;
   const n = Number.parseInt(raw, 10);

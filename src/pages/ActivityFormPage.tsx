@@ -16,7 +16,7 @@ import { ActivityForm, type ActivityFormValues } from "@/pages/activityForm/Acti
 import { ACTIVITY_DEFAULTS, ACTIVITY_LIMITS } from "@/pages/activityForm/activityFormConfig";
 import type { ActivityFieldErrors } from "@/pages/activityForm/activityFormErrors";
 import { parseApiErrors } from "@/pages/activityForm/activityFormErrors";
-import { clampInt, normalizeTags, parseActivityId, parseIntOr } from "@/pages/activityForm/activityFormUtils";
+import { clampInt, parseActivityId, parseIntOr } from "@/pages/activityForm/activityFormUtils";
 import { validateActivity } from "@/pages/activityForm/activityFormValidation";
 
 export function ActivityFormPage({ mode }: { mode: "create" | "edit" }) {
@@ -31,14 +31,13 @@ export function ActivityFormPage({ mode }: { mode: "create" | "edit" }) {
 
   const [values, setValues] = useState<ActivityFormValues>({
     title: "",
-    description: "",
-    durationMinutes: String(ACTIVITY_LIMITS.durationMin),
+    minDurationMinutes: String(ACTIVITY_LIMITS.durationMin),
+    maxDurationMinutes: String(ACTIVITY_LIMITS.durationMin),
     effortLevel: ACTIVITY_DEFAULTS.effortLevel,
     locationType: ACTIVITY_DEFAULTS.locationType,
     socialType: ACTIVITY_DEFAULTS.socialType,
     weatherCompatibility: ACTIVITY_DEFAULTS.weatherCompatibility,
     healthCompatibility: ACTIVITY_DEFAULTS.healthCompatibility,
-    tagsRaw: "",
     isActive: ACTIVITY_DEFAULTS.isActive,
   });
 
@@ -47,9 +46,13 @@ export function ActivityFormPage({ mode }: { mode: "create" | "edit" }) {
   const createDto: CreateActivityRequest = useMemo(
     () => ({
       title: values.title,
-      description: values.description.trim() ? values.description : null,
-      durationMinutes: clampInt(
-        parseIntOr(ACTIVITY_LIMITS.durationMin, values.durationMinutes),
+      minDurationMinutes: clampInt(
+        parseIntOr(ACTIVITY_LIMITS.durationMin, values.minDurationMinutes),
+        ACTIVITY_LIMITS.durationMin,
+        ACTIVITY_LIMITS.durationMax,
+      ),
+      maxDurationMinutes: clampInt(
+        parseIntOr(ACTIVITY_LIMITS.durationMin, values.maxDurationMinutes),
         ACTIVITY_LIMITS.durationMin,
         ACTIVITY_LIMITS.durationMax,
       ),
@@ -58,7 +61,6 @@ export function ActivityFormPage({ mode }: { mode: "create" | "edit" }) {
       socialType: values.socialType,
       weatherCompatibility: values.weatherCompatibility,
       healthCompatibility: values.healthCompatibility,
-      tags: normalizeTags(values.tagsRaw),
     }),
     [values],
   );
@@ -81,14 +83,13 @@ export function ActivityFormPage({ mode }: { mode: "create" | "edit" }) {
         setValues((prev) => ({
           ...prev,
           title: a.title ?? "",
-          description: a.description ?? "",
-          durationMinutes: String(a.durationMinutes ?? ACTIVITY_LIMITS.durationMin),
+          minDurationMinutes: String(a.minDurationMinutes ?? ACTIVITY_LIMITS.durationMin),
+          maxDurationMinutes: String(a.maxDurationMinutes ?? ACTIVITY_LIMITS.durationMin),
           effortLevel: (a.effortLevel ?? ACTIVITY_DEFAULTS.effortLevel) as EffortLevel,
           locationType: (a.locationType ?? ACTIVITY_DEFAULTS.locationType) as LocationType,
           socialType: (a.socialType ?? ACTIVITY_DEFAULTS.socialType) as SocialType,
           weatherCompatibility: (a.weatherCompatibility ?? ACTIVITY_DEFAULTS.weatherCompatibility) as WeatherCompatibility,
           healthCompatibility: (a.healthCompatibility ?? ACTIVITY_DEFAULTS.healthCompatibility) as HealthCompatibility,
-          tagsRaw: (a.tags ?? []).join(", "),
           isActive: Boolean(a.isActive),
         }));
       } catch (err) {
@@ -109,7 +110,7 @@ export function ActivityFormPage({ mode }: { mode: "create" | "edit" }) {
     e.preventDefault();
     setErrors({});
 
-    const local = validateActivity(createDto, values.tagsRaw);
+    const local = validateActivity(createDto);
     if (Object.keys(local).length > 0) {
       setErrors(local);
       return;

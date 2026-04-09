@@ -2,10 +2,8 @@ import type { EffortLevel, HealthCompatibility, LocationType, SocialType, Weathe
 
 export const ACTIVITY_LIMITS = {
   titleMax: 120,
-  descriptionMax: 1000,
   durationMin: 1,
   durationMax: 1440,
-  tagMaxLength: 40,
 } as const;
 
 export const ACTIVITY_DEFAULTS = {
@@ -16,8 +14,6 @@ export const ACTIVITY_DEFAULTS = {
   healthCompatibility: "ANY" as HealthCompatibility,
   isActive: true,
 } as const;
-
-export const TAGS_HELPER_TEXT = "Comma-separated, e.g. indoor, quick, creative";
 
 export const EFFORT_OPTIONS: ReadonlyArray<{ value: EffortLevel; label: string }> = [
   { value: "LOW", label: "Low" },

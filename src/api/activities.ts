@@ -10,8 +10,8 @@ export type ActivityDto = {
   id: number;
   userId: number;
   title: string;
-  description: string | null;
-  durationMinutes: number;
+  minDurationMinutes: number;
+  maxDurationMinutes: number;
   effortLevel: EffortLevel;
   locationType: LocationType;
   socialType: SocialType;
@@ -20,20 +20,18 @@ export type ActivityDto = {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
-  tags: string[];
 };
 
 export type CreateActivityRequest = {
   title: string;
-  description: string | null;
-  durationMinutes: number;
+  minDurationMinutes: number;
+  maxDurationMinutes: number;
   effortLevel: EffortLevel;
   locationType: LocationType;
   socialType: SocialType;
   weatherCompatibility: WeatherCompatibility;
   healthCompatibility: HealthCompatibility;
   isActive?: boolean;
-  tags: string[];
 };
 
 export type UpdateActivityRequest = Omit<CreateActivityRequest, "isActive"> & { isActive: boolean };
