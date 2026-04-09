@@ -1,6 +1,8 @@
 import "@/ui/common/forms.css";
 import "@/ui/common/typography.css";
 
+import type { InputHTMLAttributes } from "react";
+
 type Props = {
   label: string;
   name: string;
@@ -10,6 +12,7 @@ type Props = {
   autoComplete?: string;
   placeholder?: string;
   error?: string | null;
+  inputProps?: Omit<InputHTMLAttributes<HTMLInputElement>, "id" | "name" | "type" | "value" | "onChange">;
 };
 
 export function FormField({
@@ -21,6 +24,7 @@ export function FormField({
   autoComplete,
   placeholder,
   error,
+  inputProps,
 }: Props) {
   return (
     <div className="field">
@@ -35,6 +39,7 @@ export function FormField({
         value={value}
         autoComplete={autoComplete}
         placeholder={placeholder}
+        {...inputProps}
         onChange={(e) => onChange(e.target.value)}
       />
       {error ? <div className="error">{error}</div> : null}

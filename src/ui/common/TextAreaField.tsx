@@ -1,6 +1,8 @@
 import "@/ui/common/forms.css";
 import "@/ui/common/typography.css";
 
+import type { TextareaHTMLAttributes } from "react";
+
 type Props = {
   label: string;
   name: string;
@@ -8,9 +10,10 @@ type Props = {
   onChange: (next: string) => void;
   placeholder?: string;
   error?: string | null;
+  textAreaProps?: Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "id" | "name" | "value" | "onChange">;
 };
 
-export function TextAreaField({ label, name, value, onChange, placeholder, error }: Props) {
+export function TextAreaField({ label, name, value, onChange, placeholder, error, textAreaProps }: Props) {
   return (
     <div className="field">
       <label htmlFor={name}>
@@ -23,6 +26,7 @@ export function TextAreaField({ label, name, value, onChange, placeholder, error
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
+        {...textAreaProps}
       />
       {error ? <div className="error">{error}</div> : null}
     </div>

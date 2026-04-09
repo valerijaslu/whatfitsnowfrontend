@@ -3,6 +3,7 @@
 }
 
 .authCard {
+  width: 100%;
   max-width: var(--auth-card-max);
   margin: var(--space-5) auto;
 }

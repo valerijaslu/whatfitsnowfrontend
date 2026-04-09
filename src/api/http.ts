@@ -1,12 +1,13 @@
 import axios from "axios";
 import { getStoredToken } from "@/auth/tokenStorage";
 
-const baseURL = import.meta.env.VITE_API_BASE_URL;
+// If VITE_API_BASE_URL is unset, we intentionally fall back to relative URLs.
+// In dev, Vite can proxy /api to the backend to avoid CORS headaches.
+const baseURL = import.meta.env.VITE_API_BASE_URL ?? "";
 
 if (!baseURL) {
-  // Intentionally a runtime error for faster MVP debugging.
   // eslint-disable-next-line no-console
-  console.warn("Missing VITE_API_BASE_URL. Set it in your environment.");
+  console.warn("VITE_API_BASE_URL is not set. Using relative /api/* URLs (dev proxy recommended).");
 }
 
 export const http = axios.create({

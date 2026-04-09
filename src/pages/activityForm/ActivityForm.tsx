@@ -1,5 +1,6 @@
 import type { CreateActivityRequest, EffortLevel, LocationType, SocialType, WeatherCompatibility } from "@/api/activities";
 import {
+  ACTIVITY_LIMITS,
   EFFORT_OPTIONS,
   LOCATION_OPTIONS,
   SOCIAL_OPTIONS,
@@ -74,6 +75,7 @@ export function ActivityForm({
               onChange={(v) => onChange({ title: v })}
               placeholder="e.g. 20-minute walk"
               error={errors.title ?? null}
+              inputProps={{ required: true, maxLength: ACTIVITY_LIMITS.titleMax }}
             />
             <FormField
               label="Duration (minutes)"
@@ -82,6 +84,12 @@ export function ActivityForm({
               value={values.durationMinutes}
               onChange={(v) => onChange({ durationMinutes: v })}
               error={errors.durationMinutes ?? null}
+              inputProps={{
+                required: true,
+                min: ACTIVITY_LIMITS.durationMin,
+                max: ACTIVITY_LIMITS.durationMax,
+                step: 1,
+              }}
             />
           </div>
 
@@ -92,6 +100,7 @@ export function ActivityForm({
             onChange={(v) => onChange({ description: v })}
             placeholder="Optional notes, setup, constraints…"
             error={errors.description ?? null}
+            textAreaProps={{ maxLength: ACTIVITY_LIMITS.descriptionMax }}
           />
 
           <div className="divider" />
@@ -104,6 +113,7 @@ export function ActivityForm({
               options={EFFORT_OPTIONS}
               onChange={(v) => onChange({ effortLevel: v })}
               error={errors.effortLevel ?? null}
+              selectProps={{ required: true }}
             />
 
             <FormField
@@ -113,6 +123,12 @@ export function ActivityForm({
               value={values.pleasureScore}
               onChange={(v) => onChange({ pleasureScore: v })}
               error={errors.pleasureScore ?? null}
+              inputProps={{
+                required: true,
+                min: ACTIVITY_LIMITS.scoreMin,
+                max: ACTIVITY_LIMITS.scoreMax,
+                step: 1,
+              }}
             />
             <FormField
               label="Satisfaction score"
@@ -121,6 +137,12 @@ export function ActivityForm({
               value={values.satisfactionScore}
               onChange={(v) => onChange({ satisfactionScore: v })}
               error={errors.satisfactionScore ?? null}
+              inputProps={{
+                required: true,
+                min: ACTIVITY_LIMITS.scoreMin,
+                max: ACTIVITY_LIMITS.scoreMax,
+                step: 1,
+              }}
             />
           </div>
 
@@ -132,6 +154,7 @@ export function ActivityForm({
               options={LOCATION_OPTIONS}
               onChange={(v) => onChange({ locationType: v })}
               error={errors.locationType ?? null}
+              selectProps={{ required: true }}
             />
 
             <SelectField
@@ -141,6 +164,7 @@ export function ActivityForm({
               options={SOCIAL_OPTIONS}
               onChange={(v) => onChange({ socialType: v })}
               error={errors.socialType ?? null}
+              selectProps={{ required: true }}
             />
 
             <SelectField
@@ -150,6 +174,7 @@ export function ActivityForm({
               options={WEATHER_OPTIONS}
               onChange={(v) => onChange({ weatherCompatibility: v })}
               error={errors.weatherCompatibility ?? null}
+              selectProps={{ required: true }}
             />
           </div>
 
@@ -163,6 +188,12 @@ export function ActivityForm({
               value={values.minEnergy}
               onChange={(v) => onChange({ minEnergy: v })}
               error={errors.minEnergy ?? null}
+              inputProps={{
+                required: true,
+                min: ACTIVITY_LIMITS.energyMin,
+                max: ACTIVITY_LIMITS.energyMax,
+                step: 1,
+              }}
             />
             <FormField
               label="Max energy"
@@ -171,6 +202,12 @@ export function ActivityForm({
               value={values.maxEnergy}
               onChange={(v) => onChange({ maxEnergy: v })}
               error={errors.maxEnergy ?? null}
+              inputProps={{
+                required: true,
+                min: ACTIVITY_LIMITS.energyMin,
+                max: ACTIVITY_LIMITS.energyMax,
+                step: 1,
+              }}
             />
             <FormField
               label="Min health"
@@ -179,6 +216,12 @@ export function ActivityForm({
               value={values.minHealth}
               onChange={(v) => onChange({ minHealth: v })}
               error={errors.minHealth ?? null}
+              inputProps={{
+                required: true,
+                min: ACTIVITY_LIMITS.healthMin,
+                max: ACTIVITY_LIMITS.healthMax,
+                step: 1,
+              }}
             />
           </div>
 
@@ -191,6 +234,7 @@ export function ActivityForm({
             onChange={(v) => onChange({ tagsRaw: v })}
             placeholder={TAGS_HELPER_TEXT}
             error={errors.tags ?? null}
+            inputProps={{ maxLength: 255 }}
           />
 
           <CheckboxField
