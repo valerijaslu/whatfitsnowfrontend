@@ -1,3 +1,7 @@
+import "@/ui/common/surface.css";
+import "@/ui/common/forms.css";
+import "@/ui/common/typography.css";
+
 export function SuggestionPage() {
   return (
     <div className="card">

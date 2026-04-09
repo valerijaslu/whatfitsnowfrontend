@@ -1,0 +1,9 @@
+:root {
+  --auth-card-max: 26.25rem;
+}
+
+.authCard {
+  max-width: var(--auth-card-max);
+  margin: var(--space-5) auto;
+}
+

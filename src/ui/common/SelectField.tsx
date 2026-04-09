@@ -1,3 +1,6 @@
+import "@/ui/common/forms.css";
+import "@/ui/common/typography.css";
+
 type Option<T extends string> = {
   value: T;
   label: string;

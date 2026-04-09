@@ -1,0 +1,12 @@
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2);
+  padding: var(--space-3);
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+}
+

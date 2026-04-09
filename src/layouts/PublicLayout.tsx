@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/auth/useAuth";
+import "@/layouts/layout.css";
 
 export function PublicLayout() {
   const { isAuthenticated, isHydrating } = useAuth();

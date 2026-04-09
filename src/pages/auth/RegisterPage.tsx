@@ -2,6 +2,11 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/useAuth";
 import { FormField } from "@/ui/FormField";
+import "@/pages/auth/authPages.css";
+import "@/ui/common/surface.css";
+import "@/ui/common/forms.css";
+import "@/ui/common/typography.css";
+import "@/ui/common/buttons.css";
 
 export function RegisterPage() {
   const { register } = useAuth();

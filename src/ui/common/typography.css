@@ -1,0 +1,13 @@
+.muted {
+  color: var(--muted);
+}
+
+.error {
+  color: var(--danger);
+  font-size: var(--font-size-1);
+}
+
+.pageTitle {
+  margin: 0;
+}
+

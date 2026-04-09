@@ -11,6 +11,10 @@ import { FormField } from "@/ui/FormField";
 import { CheckboxField } from "@/ui/common/CheckboxField";
 import { SelectField } from "@/ui/common/SelectField";
 import { TextAreaField } from "@/ui/common/TextAreaField";
+import "@/ui/common/surface.css";
+import "@/ui/common/forms.css";
+import "@/ui/common/typography.css";
+import "@/ui/common/buttons.css";
 import { Link } from "react-router-dom";
 
 export type ActivityFormValues = {

@@ -1,3 +1,6 @@
+import "@/ui/common/forms.css";
+import "@/ui/common/typography.css";
+
 type Props = {
   label: string;
   name: string;

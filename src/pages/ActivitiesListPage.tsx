@@ -1,4 +1,9 @@
 import { Link } from "react-router-dom";
+import "@/layouts/layout.css";
+import "@/ui/common/surface.css";
+import "@/ui/common/forms.css";
+import "@/ui/common/typography.css";
+import "@/ui/common/buttons.css";
 
 export function ActivitiesListPage() {
   return (
