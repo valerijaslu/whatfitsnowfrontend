@@ -1,0 +1,41 @@
+type Props = {
+  label: string;
+  name: string;
+  type?: string;
+  value: string;
+  onChange: (next: string) => void;
+  autoComplete?: string;
+  placeholder?: string;
+  error?: string | null;
+};
+
+export function FormField({
+  label,
+  name,
+  type = "text",
+  value,
+  onChange,
+  autoComplete,
+  placeholder,
+  error,
+}: Props) {
+  return (
+    <div className="field">
+      <label htmlFor={name}>
+        <strong>{label}</strong>
+      </label>
+      <input
+        className="input"
+        id={name}
+        name={name}
+        type={type}
+        value={value}
+        autoComplete={autoComplete}
+        placeholder={placeholder}
+        onChange={(e) => onChange(e.target.value)}
+      />
+      {error ? <div className="error">{error}</div> : null}
+    </div>
+  );
+}
+
