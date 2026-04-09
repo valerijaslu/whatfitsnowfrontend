@@ -11,3 +11,8 @@
   margin: 0;
 }
 
+.list {
+  margin: 0;
+  padding-left: var(--space-4);
+}
+
