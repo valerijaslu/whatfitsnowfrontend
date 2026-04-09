@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = useCallback(async (input: LoginInput) => {
-    const res = await http.post("/auth/login", input);
+    const res = await http.post("/api/auth/login", input);
     const nextToken = extractToken(res.data);
     if (!nextToken) throw new Error("Login succeeded but no token was returned.");
     setStoredToken(nextToken);
@@ -66,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const register = useCallback(async (input: RegisterInput) => {
-    const res = await http.post("/auth/register", input);
+    const res = await http.post("/api/auth/register", input);
     const nextToken = extractToken(res.data);
     if (nextToken) {
       setStoredToken(nextToken);
