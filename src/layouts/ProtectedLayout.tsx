@@ -12,7 +12,6 @@ export function ProtectedLayout() {
     <div className="container">
       <div className="nav">
         <div className="navlinks">
-          <NavLink to="/">Dashboard</NavLink>
           <NavLink to="/activities">Activities</NavLink>
           <NavLink to="/activities/new">Create</NavLink>
           <NavLink to="/suggest">Suggest</NavLink>

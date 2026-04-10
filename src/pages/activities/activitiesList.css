@@ -1,14 +1,16 @@
 .tableWrap {
   width: 100%;
-  overflow: auto;
+  overflow: visible;
   border: 1px solid var(--border);
   border-radius: var(--radius-2);
+  background: var(--card);
+  box-shadow: var(--shadow-1);
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 44rem;
+  min-width: 0;
 }
 
 .th,
@@ -17,7 +19,8 @@
   padding: var(--space-2) var(--space-3);
   border-bottom: 1px solid var(--border);
   vertical-align: top;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .th {
@@ -26,15 +29,86 @@
   font-weight: 700;
 }
 
+.table tbody tr:hover td {
+  background: rgba(167, 139, 250, 0.07);
+}
+
 .tdTitle {
-  white-space: normal;
-  min-width: 16rem;
+  min-width: 0;
+}
+
+.titleCell {
+  display: flex;
+  gap: var(--space-2);
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.titleText {
+  min-width: 0;
+}
+
+.statusIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95em;
+  line-height: 1;
+}
+
+.statusIcon.isActive {
+  color: rgba(16, 185, 129, 0.95);
+}
+
+.statusIcon.isInactive {
+  color: rgba(108, 114, 128, 0.75);
+}
+
+.iconBtn {
+  appearance: none;
+  border: 1px solid var(--border-strong);
+  background: var(--card);
+  color: var(--text);
+  border-radius: var(--radius-1);
+  padding: var(--space-1) var(--space-2);
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1;
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    border-color 120ms ease,
+    background-color 120ms ease,
+    color 120ms ease;
+}
+
+.iconBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-1);
+}
+
+.iconBtn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.iconBtn:focus-visible {
+  outline: 2px solid rgba(167, 139, 250, 0.55);
+  outline-offset: 2px;
+}
+
+.iconBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.iconBtn.danger {
+  color: var(--danger);
 }
 
 .badge {
   display: inline-block;
   padding: 0 var(--space-2);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid var(--border);
   background: var(--card);
   font-size: var(--font-size-1);
@@ -45,9 +119,7 @@
   gap: var(--space-2);
   align-items: center;
   justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
-.linkBtn {
-  text-decoration: none;
-}
 

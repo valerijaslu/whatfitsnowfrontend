@@ -8,6 +8,9 @@ import "@/ui/common/typography.css";
 import "@/ui/common/buttons.css";
 import "@/pages/activities/activitiesList.css";
 import { deleteActivity, listActivities, type ActivityDto } from "@/api/activities";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircle, faCircleCheck, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { ConfirmDialog } from "@/ui/common/ConfirmDialog";
 
 function formatDuration(minMinutes: number, maxMinutes: number) {
   if (minMinutes === maxMinutes) return `${minMinutes}m`;
@@ -19,6 +22,7 @@ export function ActivitiesListPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<{ id: number; title: string } | null>(null);
 
   const sorted = useMemo(() => {
     if (!rows) return null;
@@ -52,10 +56,7 @@ export function ActivitiesListPage() {
     void refresh();
   }, []);
 
-  async function onDelete(id: number) {
-    const ok = window.confirm("Delete this activity?");
-    if (!ok) return;
-
+  async function onDeleteConfirmed(id: number) {
     setDeletingId(id);
     setError(null);
     try {
@@ -101,33 +102,51 @@ export function ActivitiesListPage() {
                   <th className="th">Effort</th>
                   <th className="th">Location</th>
                   <th className="th">Social</th>
-                  <th className="th">Active</th>
                   <th className="th" />
                 </tr>
               </thead>
               <tbody>
                 {sorted.map((a) => (
                   <tr key={a.id}>
-                    <td className={`td tdTitle`}>{a.title}</td>
+                    <td className="td tdTitle">
+                      <div className="titleCell">
+                        <span
+                          className={a.isActive ? "statusIcon isActive" : "statusIcon isInactive"}
+                          aria-label={a.isActive ? "Active" : "Inactive"}
+                          title={a.isActive ? "Active" : "Inactive"}
+                        >
+                          <span aria-hidden="true">
+                            <FontAwesomeIcon icon={a.isActive ? faCircleCheck : faCircle} />
+                          </span>
+                        </span>
+                        <span className="titleText">{a.title}</span>
+                      </div>
+                    </td>
                     <td className="td">{formatDuration(a.minDurationMinutes, a.maxDurationMinutes)}</td>
                     <td className="td">
                       <span className="badge">{a.effortLevel}</span>
                     </td>
                     <td className="td">{a.locationType}</td>
                     <td className="td">{a.socialType}</td>
-                    <td className="td">{a.isActive ? "Yes" : "No"}</td>
                     <td className="td">
                       <div className="actionsCell">
-                        <Link className="btn linkBtn" to={`/activities/${a.id}/edit`}>
-                          Edit
+                        <Link
+                          className="iconBtn"
+                          to={`/activities/${a.id}/edit`}
+                          aria-label={`Edit activity “${a.title}”`}
+                          title="Edit"
+                        >
+                          <FontAwesomeIcon icon={faPenToSquare} />
                         </Link>
                         <button
-                          className="btn"
+                          className="iconBtn danger"
                           type="button"
-                          onClick={() => onDelete(a.id)}
+                          onClick={() => setConfirmDelete({ id: a.id, title: a.title })}
                           disabled={deletingId === a.id}
+                          aria-label={`Delete activity “${a.title}”`}
+                          title={deletingId === a.id ? "Deleting…" : "Delete"}
                         >
-                          {deletingId === a.id ? "Deleting…" : "Delete"}
+                          {deletingId === a.id ? "…" : <FontAwesomeIcon icon={faTrashCan} />}
                         </button>
                       </div>
                     </td>
@@ -137,6 +156,24 @@ export function ActivitiesListPage() {
             </table>
           </div>
         ) : null}
+
+        <ConfirmDialog
+          isOpen={Boolean(confirmDelete)}
+          title="Delete activity?"
+          description={confirmDelete ? `This will permanently delete “${confirmDelete.title}”.` : undefined}
+          confirmLabel="Delete"
+          cancelLabel="Cancel"
+          isDanger
+          isConfirming={deletingId === confirmDelete?.id}
+          onCancel={() => {
+            if (deletingId) return;
+            setConfirmDelete(null);
+          }}
+          onConfirm={() => {
+            if (!confirmDelete) return;
+            void onDeleteConfirmed(confirmDelete.id).finally(() => setConfirmDelete(null));
+          }}
+        />
       </div>
     </div>
   );

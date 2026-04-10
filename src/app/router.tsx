@@ -4,7 +4,6 @@ import { ProtectedLayout } from "@/layouts/ProtectedLayout";
 import { PublicLayout } from "@/layouts/PublicLayout";
 import { LoginPage } from "@/pages/auth/LoginPage";
 import { RegisterPage } from "@/pages/auth/RegisterPage";
-import { DashboardPage } from "@/pages/DashboardPage";
 import { ActivitiesListPage } from "@/pages/ActivitiesListPage";
 import { ActivityFormPage } from "@/pages/ActivityFormPage";
 import { SuggestionPage } from "@/pages/SuggestionPage";
@@ -24,14 +23,14 @@ export function AppRouter() {
           </ProtectedRoute>
         }
       >
-        <Route path="/" element={<DashboardPage />} />
+        <Route path="/" element={<SuggestionPage />} />
         <Route path="/activities" element={<ActivitiesListPage />} />
         <Route path="/activities/new" element={<ActivityFormPage mode="create" />} />
         <Route path="/activities/:id/edit" element={<ActivityFormPage mode="edit" />} />
         <Route path="/suggest" element={<SuggestionPage />} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 }

@@ -5,13 +5,32 @@
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-1);
   cursor: pointer;
-  font-weight: 600;
+  font-weight: var(--font-weight-strong);
+  transition:
+    transform 120ms ease,
+    background-color 120ms ease,
+    border-color 120ms ease,
+    box-shadow 120ms ease;
 }
 
 .btn.primary {
   background: var(--brand);
   border-color: var(--brand);
   color: var(--brand-contrast);
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-1);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn:focus-visible {
+  outline: 2px solid rgba(167, 139, 250, 0.55);
+  outline-offset: 2px;
 }
 
 .btn:disabled {
