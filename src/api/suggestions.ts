@@ -1,25 +1,25 @@
 import { http } from "@/api/http";
-import type { WeatherCompatibility } from "@/api/activities";
+import type { EffortLevel } from "@/api/activities";
 
 export type PreferredLocationType = "INDOOR" | "OUTDOOR" | "ANY";
 export type PreferredSocialType = "ALONE" | "SOCIAL" | "ANY";
-export type HealthCompatibility = "ANY" | "HEALTHY" | "ILL" | "MUSCLE_FATIGUE";
 
 export type SuggestionRequest = {
-  currentHealth: HealthCompatibility;
+  energyLevel: number;
   preferredLocationType: PreferredLocationType;
   preferredSocialType: PreferredSocialType;
-  currentWeather: WeatherCompatibility;
   availableMinutes: number;
 };
 
 export type SuggestedActivityResponse = {
   activityId: number;
   title: string;
-  description: string | null;
-  durationMinutes: number;
+  minDurationMinutes: number;
+  maxDurationMinutes: number;
+  effortLevel: EffortLevel;
+  locationType: string;
+  socialType: string;
   score: number;
-  tags?: string[];
   reasons: string[];
 };
 

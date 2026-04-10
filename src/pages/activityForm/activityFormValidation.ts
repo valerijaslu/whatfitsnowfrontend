@@ -36,8 +36,6 @@ export function validateActivity(input: CreateActivityRequest): ActivityFieldErr
 
   if (!input.locationType) e.locationType = "Location type is required.";
   if (!input.socialType) e.socialType = "Social type is required.";
-  if (!input.weatherCompatibility) e.weatherCompatibility = "Weather compatibility is required.";
-  if (!input.healthCompatibility) e.healthCompatibility = "Health is required.";
 
   return e;
 }

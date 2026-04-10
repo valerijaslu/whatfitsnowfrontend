@@ -6,11 +6,9 @@ import {
   updateActivity,
   type CreateActivityRequest,
   type EffortLevel,
-  type HealthCompatibility,
   type LocationType,
   type SocialType,
   type UpdateActivityRequest,
-  type WeatherCompatibility,
 } from "@/api/activities";
 import { ActivityForm, type ActivityFormValues } from "@/pages/activityForm/ActivityForm";
 import { ACTIVITY_DEFAULTS, ACTIVITY_LIMITS } from "@/pages/activityForm/activityFormConfig";
@@ -36,8 +34,6 @@ export function ActivityFormPage({ mode }: { mode: "create" | "edit" }) {
     effortLevel: ACTIVITY_DEFAULTS.effortLevel,
     locationType: ACTIVITY_DEFAULTS.locationType,
     socialType: ACTIVITY_DEFAULTS.socialType,
-    weatherCompatibility: ACTIVITY_DEFAULTS.weatherCompatibility,
-    healthCompatibility: ACTIVITY_DEFAULTS.healthCompatibility,
     isActive: ACTIVITY_DEFAULTS.isActive,
   });
 
@@ -59,8 +55,6 @@ export function ActivityFormPage({ mode }: { mode: "create" | "edit" }) {
       effortLevel: values.effortLevel,
       locationType: values.locationType,
       socialType: values.socialType,
-      weatherCompatibility: values.weatherCompatibility,
-      healthCompatibility: values.healthCompatibility,
     }),
     [values],
   );
@@ -88,8 +82,6 @@ export function ActivityFormPage({ mode }: { mode: "create" | "edit" }) {
           effortLevel: (a.effortLevel ?? ACTIVITY_DEFAULTS.effortLevel) as EffortLevel,
           locationType: (a.locationType ?? ACTIVITY_DEFAULTS.locationType) as LocationType,
           socialType: (a.socialType ?? ACTIVITY_DEFAULTS.socialType) as SocialType,
-          weatherCompatibility: (a.weatherCompatibility ?? ACTIVITY_DEFAULTS.weatherCompatibility) as WeatherCompatibility,
-          healthCompatibility: (a.healthCompatibility ?? ACTIVITY_DEFAULTS.healthCompatibility) as HealthCompatibility,
           isActive: Boolean(a.isActive),
         }));
       } catch (err) {

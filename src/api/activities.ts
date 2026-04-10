@@ -1,10 +1,8 @@
 import { http } from "@/api/http";
 
 export type EffortLevel = "LOW" | "MEDIUM" | "HIGH";
-export type HealthCompatibility = "ANY" | "HEALTHY" | "ILL" | "MUSCLE_FATIGUE";
 export type LocationType = "INDOOR" | "OUTDOOR" | "BOTH";
 export type SocialType = "ALONE" | "SOCIAL" | "BOTH";
-export type WeatherCompatibility = "ANY" | "SUNNY" | "RAINY" | "COLD" | "HOT";
 
 export type ActivityDto = {
   id: number;
@@ -15,8 +13,6 @@ export type ActivityDto = {
   effortLevel: EffortLevel;
   locationType: LocationType;
   socialType: SocialType;
-  weatherCompatibility: WeatherCompatibility;
-  healthCompatibility: HealthCompatibility;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -29,8 +25,6 @@ export type CreateActivityRequest = {
   effortLevel: EffortLevel;
   locationType: LocationType;
   socialType: SocialType;
-  weatherCompatibility: WeatherCompatibility;
-  healthCompatibility: HealthCompatibility;
   isActive?: boolean;
 };
 
@@ -49,5 +43,14 @@ export async function createActivity(input: CreateActivityRequest) {
 export async function updateActivity(id: number, input: UpdateActivityRequest) {
   const res = await http.put<ActivityDto>(`/api/activities/${encodeURIComponent(String(id))}`, input);
   return res.data;
+}
+
+export async function listActivities() {
+  const res = await http.get<ActivityDto[]>("/api/activities");
+  return res.data;
+}
+
+export async function deleteActivity(id: number) {
+  await http.delete(`/api/activities/${encodeURIComponent(String(id))}`);
 }
 

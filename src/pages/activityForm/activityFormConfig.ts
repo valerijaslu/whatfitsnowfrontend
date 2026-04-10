@@ -1,4 +1,4 @@
-import type { EffortLevel, HealthCompatibility, LocationType, SocialType, WeatherCompatibility } from "@/api/activities";
+import type { EffortLevel, LocationType, SocialType } from "@/api/activities";
 
 export const ACTIVITY_LIMITS = {
   titleMax: 120,
@@ -10,8 +10,6 @@ export const ACTIVITY_DEFAULTS = {
   effortLevel: "LOW" as EffortLevel,
   locationType: "INDOOR" as LocationType,
   socialType: "ALONE" as SocialType,
-  weatherCompatibility: "ANY" as WeatherCompatibility,
-  healthCompatibility: "ANY" as HealthCompatibility,
   isActive: true,
 } as const;
 
@@ -31,20 +29,5 @@ export const SOCIAL_OPTIONS: ReadonlyArray<{ value: SocialType; label: string }>
   { value: "ALONE", label: "Alone" },
   { value: "SOCIAL", label: "Social" },
   { value: "BOTH", label: "Both" },
-];
-
-export const WEATHER_OPTIONS: ReadonlyArray<{ value: WeatherCompatibility; label: string }> = [
-  { value: "ANY", label: "Any" },
-  { value: "SUNNY", label: "Sunny" },
-  { value: "RAINY", label: "Rainy" },
-  { value: "COLD", label: "Cold" },
-  { value: "HOT", label: "Hot" },
-];
-
-export const HEALTH_OPTIONS: ReadonlyArray<{ value: HealthCompatibility; label: string }> = [
-  { value: "ANY", label: "Any" },
-  { value: "HEALTHY", label: "Healthy" },
-  { value: "ILL", label: "Ill" },
-  { value: "MUSCLE_FATIGUE", label: "Muscle fatigue" },
 ];
 

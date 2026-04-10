@@ -5,31 +5,30 @@ import "@/ui/common/forms.css";
 import "@/ui/common/typography.css";
 import "@/ui/common/buttons.css";
 import { suggestActivities, type SuggestedActivityResponse } from "@/api/suggestions";
-import type { HealthCompatibility, PreferredLocationType, PreferredSocialType } from "@/api/suggestions";
-import type { WeatherCompatibility } from "@/api/activities";
+import type { PreferredLocationType } from "@/api/suggestions";
+import type { EffortLevel } from "@/api/activities";
 import { SelectField } from "@/ui/common/SelectField";
 import { FormField } from "@/ui/FormField";
 import {
-  HEALTH_COMPATIBILITY_OPTIONS,
+  EFFORT_OPTIONS,
   PREFERRED_LOCATION_OPTIONS,
-  PREFERRED_SOCIAL_OPTIONS,
+  PREFERRED_SOCIAL_DEFAULT,
   SUGGESTION_DEFAULTS,
   SUGGESTION_LIMITS,
-  WEATHER_OPTIONS,
 } from "@/pages/suggestions/suggestionPageConfig";
 import { clampInt, parseIntOr } from "@/pages/suggestions/suggestionPageUtils";
 
+function effortToEnergyLevel(effortLevel: EffortLevel) {
+  if (effortLevel === "LOW") return 2;
+  if (effortLevel === "HIGH") return 4;
+  return 3;
+}
+
 export function SuggestionPage() {
-  const [healthCompatibility, setHealthCompatibility] = useState<HealthCompatibility>(
-    SUGGESTION_DEFAULTS.healthCompatibility,
-  );
+  const [effortLevel, setEffortLevel] = useState<EffortLevel>(SUGGESTION_DEFAULTS.effortLevel);
   const [preferredLocationType, setPreferredLocationType] = useState<PreferredLocationType>(
     SUGGESTION_DEFAULTS.preferredLocationType,
   );
-  const [preferredSocialType, setPreferredSocialType] = useState<PreferredSocialType>(
-    SUGGESTION_DEFAULTS.preferredSocialType,
-  );
-  const [currentWeather, setCurrentWeather] = useState<WeatherCompatibility>(SUGGESTION_DEFAULTS.currentWeather);
   const [availableMinutes, setAvailableMinutes] = useState(SUGGESTION_DEFAULTS.availableMinutes);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,17 +37,16 @@ export function SuggestionPage() {
 
   const request = useMemo(
     () => ({
-      currentHealth: healthCompatibility,
+      energyLevel: effortToEnergyLevel(effortLevel),
       preferredLocationType,
-      preferredSocialType,
-      currentWeather,
+      preferredSocialType: PREFERRED_SOCIAL_DEFAULT,
       availableMinutes: clampInt(
         parseIntOr(SUGGESTION_LIMITS.minutesMin, availableMinutes),
         SUGGESTION_LIMITS.minutesMin,
         SUGGESTION_LIMITS.minutesMax,
       ),
     }),
-    [healthCompatibility, preferredLocationType, preferredSocialType, currentWeather, availableMinutes],
+    [effortLevel, preferredLocationType, availableMinutes],
   );
 
   async function onSubmit(e: React.FormEvent) {
@@ -75,48 +73,32 @@ export function SuggestionPage() {
     }
   }
 
-  const top3 = results ? results.slice(0, SUGGESTION_LIMITS.topN) : null;
+  const all = results;
 
   return (
     <div className="stack">
       <div className="card">
         <div className="stack">
           <h2 className="pageTitle">Find something that fits right now</h2>
-          <div className="muted">Tell me what you’ve got to work with. I’ll suggest up to three activities.</div>
+          <div className="muted">Tell me what you’ve got to work with. I’ll suggest activities that fit.</div>
 
           <form className="stack" onSubmit={onSubmit} aria-busy={isSubmitting}>
             <SelectField
-              label="Health"
-              name="healthCompatibility"
-              value={healthCompatibility}
-              options={HEALTH_COMPATIBILITY_OPTIONS}
-              onChange={setHealthCompatibility}
+              label="Effort"
+              name="effortLevel"
+              value={effortLevel}
+              options={EFFORT_OPTIONS}
+              onChange={setEffortLevel}
               selectProps={{ required: true }}
             />
 
-            <div className="grid3">
-              <SelectField
-                label="Preferred location"
-                name="preferredLocationType"
-                value={preferredLocationType}
-                options={PREFERRED_LOCATION_OPTIONS}
-                onChange={setPreferredLocationType}
-              />
-              <SelectField
-                label="Preferred social"
-                name="preferredSocialType"
-                value={preferredSocialType}
-                options={PREFERRED_SOCIAL_OPTIONS}
-                onChange={setPreferredSocialType}
-              />
-              <SelectField
-                label="Current weather"
-                name="currentWeather"
-                value={currentWeather}
-                options={WEATHER_OPTIONS}
-                onChange={setCurrentWeather}
-              />
-            </div>
+            <SelectField
+              label="Preferred location"
+              name="preferredLocationType"
+              value={preferredLocationType}
+              options={PREFERRED_LOCATION_OPTIONS}
+              onChange={setPreferredLocationType}
+            />
 
             <FormField
               label="Available minutes"
@@ -143,25 +125,28 @@ export function SuggestionPage() {
 
           {isSubmitting ? <div className="muted">Looking for a good fit…</div> : null}
 
-          {!isSubmitting && top3 && top3.length === 0 ? (
+          {!isSubmitting && all && all.length === 0 ? (
             <div className="muted">
-              Nothing matched those inputs. Try increasing available minutes, or choose “Any” for location/social/weather.
+              Nothing matched those inputs. Try increasing available minutes or selecting “Any” for location.
             </div>
           ) : null}
 
-          {!isSubmitting && top3 && top3.length > 0 ? (
+          {!isSubmitting && all && all.length > 0 ? (
             <div className="stack">
-              {top3.map((s) => (
+              {all.map((s) => (
                 <div key={s.activityId} className="card">
                   <div className="stack">
                     <div className="rowSpaceBetween row">
                       <strong>{s.title}</strong>
-                      <span className="muted">{s.durationMinutes} min</span>
+                      <span className="muted">
+                        {s.minDurationMinutes === s.maxDurationMinutes
+                          ? `${s.minDurationMinutes} min`
+                          : `${s.minDurationMinutes}–${s.maxDurationMinutes} min`}
+                      </span>
                     </div>
-                    {s.description ? <div className="muted">{s.description}</div> : null}
-                    {s.tags && s.tags.length > 0 ? (
-                      <div className="muted">Tags: {s.tags.join(", ")}</div>
-                    ) : null}
+                    <div className="muted">
+                      {s.effortLevel} · {s.locationType} · {s.socialType}
+                    </div>
                     {s.reasons?.length ? (
                       <div className="stack">
                         <strong>Why this fits</strong>

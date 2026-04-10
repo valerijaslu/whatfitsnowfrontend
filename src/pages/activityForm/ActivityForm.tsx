@@ -1,17 +1,13 @@
 import type {
   EffortLevel,
-  HealthCompatibility,
   LocationType,
   SocialType,
-  WeatherCompatibility,
 } from "@/api/activities";
 import {
   ACTIVITY_LIMITS,
   EFFORT_OPTIONS,
-  HEALTH_OPTIONS,
   LOCATION_OPTIONS,
   SOCIAL_OPTIONS,
-  WEATHER_OPTIONS,
 } from "@/pages/activityForm/activityFormConfig";
 import type { ActivityFieldErrors } from "@/pages/activityForm/activityFormErrors";
 import { FormField } from "@/ui/FormField";
@@ -31,8 +27,6 @@ export type ActivityFormValues = {
   effortLevel: EffortLevel;
   locationType: LocationType;
   socialType: SocialType;
-  weatherCompatibility: WeatherCompatibility;
-  healthCompatibility: HealthCompatibility;
   isActive: boolean;
 };
 
@@ -97,29 +91,17 @@ export function ActivityForm({
 
           <div className="divider" />
 
+          <SelectField
+            label="Effort level"
+            name="effortLevel"
+            value={values.effortLevel}
+            options={EFFORT_OPTIONS}
+            onChange={(v) => onChange({ effortLevel: v })}
+            error={errors.effortLevel ?? null}
+            selectProps={{ required: true }}
+          />
+
           <div className="grid2">
-            <SelectField
-              label="Effort level"
-              name="effortLevel"
-              value={values.effortLevel}
-              options={EFFORT_OPTIONS}
-              onChange={(v) => onChange({ effortLevel: v })}
-              error={errors.effortLevel ?? null}
-              selectProps={{ required: true }}
-            />
-
-            <SelectField
-              label="Health"
-              name="healthCompatibility"
-              value={values.healthCompatibility}
-              options={HEALTH_OPTIONS}
-              onChange={(v) => onChange({ healthCompatibility: v })}
-              error={errors.healthCompatibility ?? null}
-              selectProps={{ required: true }}
-            />
-          </div>
-
-          <div className="grid3">
             <SelectField
               label="Location type"
               name="locationType"
@@ -137,16 +119,6 @@ export function ActivityForm({
               options={SOCIAL_OPTIONS}
               onChange={(v) => onChange({ socialType: v })}
               error={errors.socialType ?? null}
-              selectProps={{ required: true }}
-            />
-
-            <SelectField
-              label="Weather compatibility"
-              name="weatherCompatibility"
-              value={values.weatherCompatibility}
-              options={WEATHER_OPTIONS}
-              onChange={(v) => onChange({ weatherCompatibility: v })}
-              error={errors.weatherCompatibility ?? null}
               selectProps={{ required: true }}
             />
           </div>
