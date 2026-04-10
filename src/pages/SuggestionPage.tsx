@@ -5,14 +5,14 @@ import "@/ui/common/forms.css";
 import "@/ui/common/typography.css";
 import "@/ui/common/buttons.css";
 import { suggestActivities, type SuggestedActivityResponse } from "@/api/suggestions";
-import type { PreferredLocationType } from "@/api/suggestions";
+import type { PreferredLocationType, PreferredSocialType } from "@/api/suggestions";
 import type { EffortLevel } from "@/api/activities";
 import { SelectField } from "@/ui/common/SelectField";
 import { FormField } from "@/ui/FormField";
 import {
   EFFORT_OPTIONS,
   PREFERRED_LOCATION_OPTIONS,
-  PREFERRED_SOCIAL_DEFAULT,
+  PREFERRED_SOCIAL_OPTIONS,
   SUGGESTION_DEFAULTS,
   SUGGESTION_LIMITS,
 } from "@/pages/suggestions/suggestionPageConfig";
@@ -29,6 +29,9 @@ export function SuggestionPage() {
   const [preferredLocationType, setPreferredLocationType] = useState<PreferredLocationType>(
     SUGGESTION_DEFAULTS.preferredLocationType,
   );
+  const [preferredSocialType, setPreferredSocialType] = useState<PreferredSocialType>(
+    SUGGESTION_DEFAULTS.preferredSocialType,
+  );
   const [availableMinutes, setAvailableMinutes] = useState(SUGGESTION_DEFAULTS.availableMinutes);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,14 +42,14 @@ export function SuggestionPage() {
     () => ({
       energyLevel: effortToEnergyLevel(effortLevel),
       preferredLocationType,
-      preferredSocialType: PREFERRED_SOCIAL_DEFAULT,
+      preferredSocialType,
       availableMinutes: clampInt(
         parseIntOr(SUGGESTION_LIMITS.minutesMin, availableMinutes),
         SUGGESTION_LIMITS.minutesMin,
         SUGGESTION_LIMITS.minutesMax,
       ),
     }),
-    [effortLevel, preferredLocationType, availableMinutes],
+    [effortLevel, preferredLocationType, preferredSocialType, availableMinutes],
   );
 
   async function onSubmit(e: React.FormEvent) {
@@ -98,6 +101,14 @@ export function SuggestionPage() {
               value={preferredLocationType}
               options={PREFERRED_LOCATION_OPTIONS}
               onChange={setPreferredLocationType}
+            />
+
+            <SelectField
+              label="Preferred social"
+              name="preferredSocialType"
+              value={preferredSocialType}
+              options={PREFERRED_SOCIAL_OPTIONS}
+              onChange={setPreferredSocialType}
             />
 
             <FormField

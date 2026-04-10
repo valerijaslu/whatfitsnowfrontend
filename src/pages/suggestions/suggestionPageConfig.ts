@@ -11,6 +11,7 @@ export const SUGGESTION_LIMITS = {
 export const SUGGESTION_DEFAULTS = {
   effortLevel: "LOW" as EffortLevel,
   preferredLocationType: "ANY" as PreferredLocationType,
+  preferredSocialType: "ANY" as PreferredSocialType,
   availableMinutes: String(SUGGESTION_LIMITS.minutesMin),
 } as const;
 
@@ -26,5 +27,9 @@ export const PREFERRED_LOCATION_OPTIONS: ReadonlyArray<{ value: PreferredLocatio
   { value: "OUTDOOR", label: "Outdoor" },
 ];
 
-export const PREFERRED_SOCIAL_DEFAULT: PreferredSocialType = "ANY";
+export const PREFERRED_SOCIAL_OPTIONS: ReadonlyArray<{ value: PreferredSocialType; label: string }> = [
+  { value: "ANY", label: "Any" },
+  { value: "ALONE", label: "Alone" },
+  { value: "SOCIAL", label: "Social" },
+];
 
